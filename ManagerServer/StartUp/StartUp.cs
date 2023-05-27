@@ -12,7 +12,7 @@ using ManagerServer.FarmerService;
 using ManagerServer.Service.SmallHoldingServices;
 using ManagerServer.Service;
 using MyProject.Services;
-using ManagerServer.Service.ProcessDataService;
+using ManagerServer.Service.DataDeviceService;
 
 namespace ManagerServer.StartUp
 {
@@ -30,6 +30,7 @@ namespace ManagerServer.StartUp
             builder.Services.AddScoped<RoleManager<IdentityRole>>();
             builder.Services.AddScoped<IFarmerService, FarmarService>();
             builder.Services.AddScoped<ISmallHoldingService, SmallHoldingService>();
+            builder.Services.AddScoped<IDataDeviceService, DataDeviceService>();
 
             builder.Services.AddCors(options =>
             {
