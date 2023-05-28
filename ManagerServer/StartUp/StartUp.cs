@@ -6,13 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ManagerServer.Service.VisitorServices;
-using ManagerServer.Service.SlaveServices;
-using ManagerServer.Service.FarmerService;
-using ManagerServer.FarmerService;
-using ManagerServer.Service.SmallHoldingServices;
 using ManagerServer.Service;
-using MyProject.Services;
-using ManagerServer.Service.ProcessDataService;
+using ManagerServer.Service.RoleService;
+using ManagerServer.Service.UserService;
+using ManagerServer.Service.FarmService;
 
 namespace ManagerServer.StartUp
 {
@@ -23,13 +20,14 @@ namespace ManagerServer.StartUp
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IVisitorService, VisitorService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<UserManager<AppUser>>();
             builder.Services.AddScoped<SignInManager<AppUser>>();
-            builder.Services.AddScoped<ISlaveService, SlaveService>();
             builder.Services.AddScoped<RoleManager<IdentityRole>>();
-            builder.Services.AddScoped<IFarmerService, FarmarService>();
-            builder.Services.AddScoped<ISmallHoldingService, SmallHoldingService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IFarmService, FarmService>();
 
             builder.Services.AddCors(options =>
             {
@@ -46,8 +44,8 @@ namespace ManagerServer.StartUp
         }
         public static WebApplicationBuilder AddBackgroundServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddHostedService<ListeningService>();
-            builder.Services.AddHostedService<ProcessDataService>();
+            //builder.Services.AddHostedService<ListeningService>();
+            //builder.Services.AddHostedService<ProcessDataService>();
             return builder;
         }
         public static WebApplicationBuilder AddServicesContext(this WebApplicationBuilder builder) {

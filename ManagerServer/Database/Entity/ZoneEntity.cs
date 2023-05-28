@@ -3,19 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ManagerServer.Database.Entity
 {
-    public class FarmEntity
+    public class ZoneEntity
     {
         [Key]
         public int Id { get; set; }
-        public string? OwnerId { get; set; }
-        public AppUser? Owner { get; set; }
+        [ForeignKey("FarmEntity")]
+        public int? FarmId { get; set; }
         public string? Name { get; set; }
         public string? Decription { get; set; }
         public DateTime? CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
-        public string? Avata { get; set; }
-        public string? Adress { get; set; }
-        public List<ZoneEntity>? Zones { get; set; }
-
+        public string? Image { get; set; }
+        [InverseProperty("ZoneEntity")]
+        public virtual DeviceEntity? DeviceEntity { get; set; }
     }
 }

@@ -10,5 +10,6 @@ namespace ManagerServer.Model
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string ConfirmPassWord { get; set; } = null!;
+        public string NumberPhone { get; set; }
     }
 }

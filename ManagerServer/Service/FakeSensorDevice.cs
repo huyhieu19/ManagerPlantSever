@@ -38,8 +38,8 @@ namespace ManagerServer.Service
         }
         public void SubcribeSystemDefault()
         {
-            this.Subcribe(new string[] { topicTest + "/1" + "/1" + "/R"+ "Temparute" });
-            this.Subcribe(new string[] { topicTest + "/1" + "/1" + "/R" + "/Mosuli" });
+            this.Subcribe(new string[] { topicTest  + "/1" + "/R"+ "/Temparute" });
+            this.Subcribe(new string[] { topicTest + "/1" + "/R" + "/Mosuli" });
         }
         public async Task SenFakeData()
         {
@@ -48,17 +48,17 @@ namespace ManagerServer.Service
                 while (true)
                 {
                     var temp = new Random().Next(30, 37);
-                    this.Publish(topicTest + "/1" + "/1" + "/R" + $"/{TopicType.Temperature}", temp.ToString());
+                    this.Publish(topicTest  + "/1" + "/R" + $"/{TopicType.Temperature}", temp.ToString());
 
                     var mosuli = new Random().Next(70, 80);
-                    this.Publish(topicTest + "/1" + "/1" + "/R" + $"/{TopicType.Moisture}", mosuli.ToString());
+                    this.Publish(topicTest + "/1" + "/R" + $"/{TopicType.Moisture}", mosuli.ToString());
                     var human = new Random().Next(70, 80);
-                    this.Publish(topicTest + "/1" + "/1" + "/R" + $"/{TopicType.Humidity}", human.ToString());
+                    this.Publish(topicTest  + "/1" + "/R" + $"/{TopicType.Humidity}", human.ToString());
+                
 
-
-                    this.Publish(topicTest + "/1" + "/1" + "/W" + $"/{TopicType.IsOnFan}", 0.ToString());
-                    this.Publish(topicTest + "/1" + "/1" + "/W" + $"/{TopicType.IsOnWater}", 0.ToString());
-                    this.Publish(topicTest + "/1" + "/1" + "/W" + $"/{TopicType.IsOnLamp}", 0.ToString());
+                    this.Publish(topicTest  + "/1" + "/W" + $"/{TopicType.IsOnFan}", 0.ToString());
+                    this.Publish(topicTest  + "/1" + "/W" + $"/{TopicType.IsOnWater}", 0.ToString());
+                    this.Publish(topicTest  + "/1" + "/W" + $"/{TopicType.IsOnLamp}", 0.ToString());
 
                     Thread.Sleep(4000);
                 }

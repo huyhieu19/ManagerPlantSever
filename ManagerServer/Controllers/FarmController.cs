@@ -1,74 +1,37 @@
 ﻿using Common.Model.Farm;
-using ManagerServer.Model;
-using ManagerServer.Service.FarmerService;
+using ManagerServer.Database.Entity;
+using ManagerServer.Service.FarmService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ManagerServer.Controllers
 {
     [ApiController, Route("api/[controller]")]
 
-    public class FarmController : ControllerBase
+    public class FarmController
     {
-        private readonly IFarmerService farmerService;
+        private readonly IFarmService service;
 
-        public FarmController(IFarmerService farmerService)
+        public FarmController(IFarmService service)
         {
-            this.farmerService = farmerService;
+            this.service = service;
         }
-        [HttpPost("getallfarm")]
-        public async Task<IActionResult> GetAllFarm(FarmQueryModel queryModel)
+        [HttpPost, Route("add")]
+        public async Task<bool> AddFarm([FromBody]FarmQueryModel queryModel)
         {
-           try
-            {
-                var result = await farmerService.GetAllFarm(queryModel);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-            
+            return await service.AddFarm(queryModel);
         }
-        [HttpPost("getafarmbyid")]
-        public async Task<IActionResult> GetFarmbyId(FarmQueryModel queryModel)
-        {
-            try
-            {
-                var result = await farmerService.GetFarmById(queryModel);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Ok("Exception");
-            }
+        [HttpGet, Route("get-all")]
 
-        }
-        [HttpPost("getafarmbyownerid")]
-        public async Task<IActionResult> GetFarmbyOwnerId(FarmQueryModel queryModel)
+        public async Task<List<FarmEntity>> GetAll()
         {
-            try
-            {
-                var result = await farmerService.GetFarmByOwnerId(queryModel);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Ok("Exception");
-            }
+            return await service.GetAll();
+        }
+        [HttpPut, Route("update")]
 
-        }
-        [HttpPost("addafarm")]
-        public async Task<IActionResult> AddAFarm(FarmQueryModel queryModel)
+        public async Task<bool> Update([FromBody] FarmQueryModel queryModel)
         {
-            try
-            {
-                var result = await farmerService.AddFarm(queryModel);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Exception: "+ ex);
-            }
+            return await service.UpdateFarm(queryModel);
         }
     }
 }
