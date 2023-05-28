@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <Folder Include="AdminService\" />
+    <Folder Include="Controllers\Garbage\" />
+    <Folder Include="Service\ZoneService\" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ManagerServer.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class inital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,12 @@ namespace ManagerServer.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Dob = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Avata = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    is_ative = table.Column<bool>(type: "bit", nullable: true),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -168,7 +173,11 @@ namespace ManagerServer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Decription = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Decription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Avata = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -181,26 +190,52 @@ namespace ManagerServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SmallHoldingEntities",
+                name: "ZoneEntities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FarmId = table.Column<int>(type: "int", nullable: true),
-                    NameSmallHolding = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Decription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SmallHoldingEntities", x => x.Id);
+                    table.PrimaryKey("PK_ZoneEntities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SmallHoldingEntities_FarmEntities_FarmId",
+                        name: "FK_ZoneEntities_FarmEntities_FarmId",
                         column: x => x.FarmId,
                         principalTable: "FarmEntities",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "DataProcessingEntites",
+                name: "DeviceEntities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Decription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    ZoneId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceEntities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeviceEntities_ZoneEntities_ZoneId",
+                        column: x => x.ZoneId,
+                        principalTable: "ZoneEntities",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DataEntities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -208,46 +243,17 @@ namespace ManagerServer.Migrations
                     Topic = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Payload = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RetrieveAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FarmId = table.Column<int>(type: "int", nullable: true),
-                    Mode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SmallHoldingId = table.Column<int>(type: "int", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeviceId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DataProcessingEntites", x => x.Id);
+                    table.PrimaryKey("PK_DataEntities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DataProcessingEntites_SmallHoldingEntities_SmallHoldingId",
-                        column: x => x.SmallHoldingId,
-                        principalTable: "SmallHoldingEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SmallHoldingUserEntities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Decription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SmallHoldingId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SmallHoldingUserEntities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SmallHoldingUserEntities_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_DataEntities_DeviceEntities_DeviceId",
+                        column: x => x.DeviceId,
+                        principalTable: "DeviceEntities",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_SmallHoldingUserEntities_SmallHoldingEntities_SmallHoldingId",
-                        column: x => x.SmallHoldingId,
-                        principalTable: "SmallHoldingEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -290,9 +296,14 @@ namespace ManagerServer.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DataProcessingEntites_SmallHoldingId",
-                table: "DataProcessingEntites",
-                column: "SmallHoldingId");
+                name: "IX_DataEntities_DeviceId",
+                table: "DataEntities",
+                column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeviceEntities_ZoneId",
+                table: "DeviceEntities",
+                column: "ZoneId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FarmEntities_OwnerId",
@@ -300,19 +311,9 @@ namespace ManagerServer.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SmallHoldingEntities_FarmId",
-                table: "SmallHoldingEntities",
+                name: "IX_ZoneEntities_FarmId",
+                table: "ZoneEntities",
                 column: "FarmId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SmallHoldingUserEntities_AppUserId",
-                table: "SmallHoldingUserEntities",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SmallHoldingUserEntities_SmallHoldingId",
-                table: "SmallHoldingUserEntities",
-                column: "SmallHoldingId");
         }
 
         /// <inheritdoc />
@@ -334,16 +335,16 @@ namespace ManagerServer.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DataProcessingEntites");
-
-            migrationBuilder.DropTable(
-                name: "SmallHoldingUserEntities");
+                name: "DataEntities");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "SmallHoldingEntities");
+                name: "DeviceEntities");
+
+            migrationBuilder.DropTable(
+                name: "ZoneEntities");
 
             migrationBuilder.DropTable(
                 name: "FarmEntities");

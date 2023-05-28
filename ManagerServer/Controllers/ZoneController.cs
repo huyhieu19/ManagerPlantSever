@@ -2,7 +2,7 @@
 
 namespace ManagerServer.Controllers
 {
-    public class AdminController : Controller
+    public class ZoneController : Controller
     {
         public IActionResult Index()
         {

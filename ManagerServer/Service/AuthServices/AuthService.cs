@@ -10,14 +10,14 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace ManagerServer.Service.VisitorServices
 {
-    public class VisitorService : IVisitorService
+    public class AuthService : IAuthService
     {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IConfiguration configuration;
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public VisitorService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager,
+        public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager,
             IConfiguration configuration)
         {
             this.userManager = userManager;
@@ -25,22 +25,20 @@ namespace ManagerServer.Service.VisitorServices
             this.configuration = configuration;
             this.roleManager = roleManager;
         }
-        public async Task<(string, string)> SignInAsync(SignInRequestModel model)
+        public async Task<string> SignInAsync(SignInRequestModel model)
         {
             var result = await signInManager.PasswordSignInAsync(
                model.Email, model.Password, false, false);
             if (!result.Succeeded)
             {
-                return (string.Empty, string.Empty);
+                return "";
             }
             var authClaims = await GetAuthClaims(await userManager.FindByEmailAsync(model.Email));
-
             var token = GenarateToken(authClaims);
-            var id = await userManager.GetUserIdAsync(await userManager.FindByEmailAsync(model.Email));
-            return await Task.FromResult((token, id));
+            return await Task.FromResult(token);
         }
 
-        public async Task<(string, string)> SignUpAsync(SignUpRequestModel model)
+        public async Task<(int,string)> SignUpAsync(SignUpRequestModel model)
         {
             var user = new AppUser
             {
@@ -48,18 +46,23 @@ namespace ManagerServer.Service.VisitorServices
                 LastName = model.LastName,
                 Email = model.Email,
                 UserName = model.Email,
-                Dob = DateTime.Now,
+                Birthday = DateTime.Now,
+                PhoneNumber = model.NumberPhone,
             };
+            var userExits = await userManager.FindByEmailAsync(user.Email);
+            if (userExits != null)
+            {
+                return (-2, "");
+            }
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
                 var tempUser = await userManager.FindByEmailAsync(model.Email);
-                var id = await userManager.GetUserIdAsync(tempUser);
                 var authClaims = await GetAuthClaims(tempUser);
                 var token = GenarateToken(authClaims);
-                return await Task.FromResult((token, id));
+                return await Task.FromResult((0,token));
             }
-            else return (string.Empty, string.Empty);
+            return (-1, "");
         }
         private async Task<List<Claim>> GetAuthClaims(IdentityUser user)
         {

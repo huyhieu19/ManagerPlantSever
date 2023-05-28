@@ -4,6 +4,7 @@ using ManagerServer.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManagerServer.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    partial class ManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230527232201_relationship")]
+    partial class relationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,9 +229,6 @@ namespace ManagerServer.Migrations
                     b.Property<string>("Decription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FarmEntityId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("FarmId")
                         .HasColumnType("int");
 
@@ -243,7 +243,7 @@ namespace ManagerServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FarmEntityId");
+                    b.HasIndex("FarmId");
 
                     b.ToTable("ZoneEntities");
                 });
@@ -392,11 +392,11 @@ namespace ManagerServer.Migrations
 
             modelBuilder.Entity("ManagerServer.Database.Entity.DeviceEntity", b =>
                 {
-                    b.HasOne("ManagerServer.Database.Entity.ZoneEntity", "ZoneEntity")
-                        .WithOne("DeviceEntity")
+                    b.HasOne("ManagerServer.Database.Entity.ZoneEntity", "Zone")
+                        .WithOne("Device")
                         .HasForeignKey("ManagerServer.Database.Entity.DeviceEntity", "ZoneId");
 
-                    b.Navigation("ZoneEntity");
+                    b.Navigation("Zone");
                 });
 
             modelBuilder.Entity("ManagerServer.Database.Entity.FarmEntity", b =>
@@ -410,9 +410,11 @@ namespace ManagerServer.Migrations
 
             modelBuilder.Entity("ManagerServer.Database.Entity.ZoneEntity", b =>
                 {
-                    b.HasOne("ManagerServer.Database.Entity.FarmEntity", null)
+                    b.HasOne("ManagerServer.Database.Entity.FarmEntity", "Farm")
                         .WithMany("Zones")
-                        .HasForeignKey("FarmEntityId");
+                        .HasForeignKey("FarmId");
+
+                    b.Navigation("Farm");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -483,7 +485,8 @@ namespace ManagerServer.Migrations
 
             modelBuilder.Entity("ManagerServer.Database.Entity.ZoneEntity", b =>
                 {
-                    b.Navigation("DeviceEntity");
+                    b.Navigation("Device")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

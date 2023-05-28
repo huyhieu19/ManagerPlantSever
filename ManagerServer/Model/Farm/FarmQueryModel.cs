@@ -13,6 +13,7 @@ namespace Common.Model.Farm
         public string? OwnerID { get; set; }
         public string? FarmName { get; set;}
         public string? FarmDescription { get; set; }
-        public int? SMHId { get; set; }
+        public string? Avata { get; set; }
+        public string? Adress { get; set; }
     }
 }

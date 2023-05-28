@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManagerServer.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    [Migration("20230505174943_fix")]
-    partial class fix
+    [Migration("20230527233852_edti")]
+    partial class edti
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,11 +36,17 @@ namespace ManagerServer.Migrations
                     b.Property<string>("Adress")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Avata")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Birthday")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Dob")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -51,6 +57,9 @@ namespace ManagerServer.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -85,9 +94,15 @@ namespace ManagerServer.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool?>("is_ative")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -102,7 +117,7 @@ namespace ManagerServer.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ManagerServer.Database.Entity.DataProcessingEntity", b =>
+            modelBuilder.Entity("ManagerServer.Database.Entity.DataEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -110,11 +125,8 @@ namespace ManagerServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("FarmId")
+                    b.Property<int?>("DeviceId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Mode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Payload")
                         .HasColumnType("nvarchar(max)");
@@ -122,17 +134,49 @@ namespace ManagerServer.Migrations
                     b.Property<DateTime?>("RetrieveAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SmallHoldingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Topic")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SmallHoldingId");
+                    b.HasIndex("DeviceId");
 
-                    b.ToTable("DataProcessingEntites");
+                    b.ToTable("DataEntities");
+                });
+
+            modelBuilder.Entity("ManagerServer.Database.Entity.DeviceEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Decription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ZoneId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ZoneId")
+                        .IsUnique()
+                        .HasFilter("[ZoneId] IS NOT NULL");
+
+                    b.ToTable("DeviceEntities");
                 });
 
             modelBuilder.Entity("ManagerServer.Database.Entity.FarmEntity", b =>
@@ -143,6 +187,15 @@ namespace ManagerServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Avata")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Decription")
                         .HasColumnType("nvarchar(max)");
 
@@ -152,6 +205,9 @@ namespace ManagerServer.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
@@ -159,7 +215,7 @@ namespace ManagerServer.Migrations
                     b.ToTable("FarmEntities");
                 });
 
-            modelBuilder.Entity("ManagerServer.Database.Entity.SmallHoldingEntity", b =>
+            modelBuilder.Entity("ManagerServer.Database.Entity.ZoneEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,20 +223,29 @@ namespace ManagerServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("CreateAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Decription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("FarmId")
                         .HasColumnType("int");
 
-                    b.Property<string>("NameSmallHolding")
+                    b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FarmId");
 
-                    b.ToTable("SmallHoldingEntities");
+                    b.ToTable("ZoneEntities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -316,15 +381,22 @@ namespace ManagerServer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ManagerServer.Database.Entity.DataProcessingEntity", b =>
+            modelBuilder.Entity("ManagerServer.Database.Entity.DataEntity", b =>
                 {
-                    b.HasOne("ManagerServer.Database.Entity.SmallHoldingEntity", "SmallHolding")
-                        .WithMany()
-                        .HasForeignKey("SmallHoldingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("ManagerServer.Database.Entity.DeviceEntity", "Device")
+                        .WithMany("Datas")
+                        .HasForeignKey("DeviceId");
 
-                    b.Navigation("SmallHolding");
+                    b.Navigation("Device");
+                });
+
+            modelBuilder.Entity("ManagerServer.Database.Entity.DeviceEntity", b =>
+                {
+                    b.HasOne("ManagerServer.Database.Entity.ZoneEntity", "Zone")
+                        .WithOne("Device")
+                        .HasForeignKey("ManagerServer.Database.Entity.DeviceEntity", "ZoneId");
+
+                    b.Navigation("Zone");
                 });
 
             modelBuilder.Entity("ManagerServer.Database.Entity.FarmEntity", b =>
@@ -336,10 +408,10 @@ namespace ManagerServer.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("ManagerServer.Database.Entity.SmallHoldingEntity", b =>
+            modelBuilder.Entity("ManagerServer.Database.Entity.ZoneEntity", b =>
                 {
                     b.HasOne("ManagerServer.Database.Entity.FarmEntity", "Farm")
-                        .WithMany("SmallHoldings")
+                        .WithMany("Zones")
                         .HasForeignKey("FarmId");
 
                     b.Navigation("Farm");
@@ -401,9 +473,19 @@ namespace ManagerServer.Migrations
                     b.Navigation("Farms");
                 });
 
+            modelBuilder.Entity("ManagerServer.Database.Entity.DeviceEntity", b =>
+                {
+                    b.Navigation("Datas");
+                });
+
             modelBuilder.Entity("ManagerServer.Database.Entity.FarmEntity", b =>
                 {
-                    b.Navigation("SmallHoldings");
+                    b.Navigation("Zones");
+                });
+
+            modelBuilder.Entity("ManagerServer.Database.Entity.ZoneEntity", b =>
+                {
+                    b.Navigation("Device");
                 });
 #pragma warning restore 612, 618
         }
