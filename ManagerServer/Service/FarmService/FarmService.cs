@@ -33,6 +33,11 @@ namespace ManagerServer.Service.FarmService
             return await dbContext.FarmEntities.ToListAsync();
         }
 
+        public async Task<FarmEntity> GetById(FarmQueryModel queryModel)
+        {
+            return await dbContext.FarmEntities.FirstOrDefaultAsync(p=>p.Id == queryModel.Id);
+        }
+
         public async Task<bool> UpdateFarm(FarmQueryModel query)
         {
             var farm = await dbContext.FarmEntities.FindAsync(query.Id);

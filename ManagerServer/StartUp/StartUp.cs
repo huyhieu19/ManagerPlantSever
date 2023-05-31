@@ -10,6 +10,7 @@ using ManagerServer.Service;
 using ManagerServer.Service.RoleService;
 using ManagerServer.Service.UserService;
 using ManagerServer.Service.FarmService;
+using ManagerServer.Service.ZoneService;
 
 namespace ManagerServer.StartUp
 {
@@ -28,6 +29,7 @@ namespace ManagerServer.StartUp
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IFarmService, FarmService>();
+            builder.Services.AddScoped<IZoneService, ZoneService>();
 
             builder.Services.AddCors(options =>
             {

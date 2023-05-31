@@ -8,7 +8,7 @@ namespace ManagerServer.Controllers
 {
     [ApiController, Route("api/[controller]")]
 
-    public class FarmController
+    public class FarmController: ControllerBase
     {
         private readonly IFarmService service;
 
@@ -32,6 +32,12 @@ namespace ManagerServer.Controllers
         public async Task<bool> Update([FromBody] FarmQueryModel queryModel)
         {
             return await service.UpdateFarm(queryModel);
+        }
+        [HttpPost, Route("get-byid")]
+
+        public async Task<FarmEntity> GetById([FromBody] FarmQueryModel queryModel)
+        {
+            return await service.GetById(queryModel);
         }
     }
 }
