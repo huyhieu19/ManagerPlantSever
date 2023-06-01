@@ -1,14 +1,15 @@
 ﻿using Common.Model.Farm;
 using ManagerServer.Database.Entity;
+using ManagerServer.Model.Farm;
+using ManagerServer.Model.ResponeModel;
 using ManagerServer.Service.FarmService;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ManagerServer.Controllers
 {
-    [ApiController, Route("api/[controller]")]
+    [ApiController, Route ("api/[controller]")]
 
-    public class FarmController: ControllerBase
+    public class FarmController : ControllerBase
     {
         private readonly IFarmService service;
 
@@ -16,28 +17,28 @@ namespace ManagerServer.Controllers
         {
             this.service = service;
         }
-        [HttpPost, Route("add")]
-        public async Task<bool> AddFarm([FromBody]FarmQueryModel queryModel)
+        [HttpPost, Route ("add")]
+        public async Task<ResponseModel<bool>> AddFarm([FromBody] FarmQueryModel queryModel)
         {
-            return await service.AddFarm(queryModel);
+            return await service.AddFarm (queryModel);
         }
-        [HttpGet, Route("get-all")]
+        [HttpGet, Route ("get-all")]
 
         public async Task<List<FarmEntity>> GetAll()
         {
-            return await service.GetAll();
+            return await service.GetAll ();
         }
-        [HttpPut, Route("update")]
+        [HttpPut, Route ("update")]
 
-        public async Task<bool> Update([FromBody] FarmQueryModel queryModel)
+        public async Task<bool> Update([FromBody] FarmUpdateModel queryModel)
         {
-            return await service.UpdateFarm(queryModel);
+            return await service.UpdateFarm (queryModel);
         }
-        [HttpPost, Route("get-byid")]
+        [HttpGet, Route ("/{id}")]
 
-        public async Task<FarmEntity> GetById([FromBody] FarmQueryModel queryModel)
+        public async Task<FarmEntity> GetById(int Id)
         {
-            return await service.GetById(queryModel);
+            return await service.GetById (Id);
         }
     }
 }

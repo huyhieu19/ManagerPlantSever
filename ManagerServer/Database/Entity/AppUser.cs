@@ -1,10 +1,9 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ManagerServer.Database.Entity
 {
-    public class AppUser: IdentityUser
+    public class AppUser : IdentityUser
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -13,7 +12,7 @@ namespace ManagerServer.Database.Entity
         public string? Avata { get; set; }
         public DateTime? CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
-        public bool? is_ative { get; set; } = true;
+        public bool? is_ative { get; set; } = false;
         public string? Adress { get; set; }
 
         public List<FarmEntity>? Farms { get; set; }

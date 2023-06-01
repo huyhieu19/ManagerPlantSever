@@ -1,7 +1,6 @@
 ﻿using ManagerServer.Database.Entity;
 using ManagerServer.Model;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -27,18 +26,18 @@ namespace ManagerServer.Service.VisitorServices
         }
         public async Task<string> SignInAsync(SignInRequestModel model)
         {
-            var result = await signInManager.PasswordSignInAsync(
+            var result = await signInManager.PasswordSignInAsync (
                model.Email, model.Password, false, false);
-            if (!result.Succeeded)
+            if ( !result.Succeeded )
             {
                 return "";
             }
-            var authClaims = await GetAuthClaims(await userManager.FindByEmailAsync(model.Email));
-            var token = GenarateToken(authClaims);
-            return await Task.FromResult(token);
+            var authClaims = await GetAuthClaims (await userManager.FindByEmailAsync (model.Email));
+            var token = GenarateToken (authClaims);
+            return await Task.FromResult (token);
         }
 
-        public async Task<(int,string)> SignUpAsync(SignUpRequestModel model)
+        public async Task<(int, string)> SignUpAsync(SignUpRequestModel model)
         {
             var user = new AppUser
             {
@@ -49,18 +48,18 @@ namespace ManagerServer.Service.VisitorServices
                 Birthday = DateTime.Now,
                 PhoneNumber = model.NumberPhone,
             };
-            var userExits = await userManager.FindByEmailAsync(user.Email);
-            if (userExits != null)
+            var userExits = await userManager.FindByEmailAsync (user.Email);
+            if ( userExits != null )
             {
                 return (-2, "");
             }
-            var result = await userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
+            var result = await userManager.CreateAsync (user, model.Password);
+            if ( result.Succeeded )
             {
-                var tempUser = await userManager.FindByEmailAsync(model.Email);
-                var authClaims = await GetAuthClaims(tempUser);
-                var token = GenarateToken(authClaims);
-                return await Task.FromResult((0,token));
+                var tempUser = await userManager.FindByEmailAsync (model.Email);
+                var authClaims = await GetAuthClaims (tempUser);
+                var token = GenarateToken (authClaims);
+                return await Task.FromResult ((0, token));
             }
             return (-1, "");
         }
@@ -74,20 +73,20 @@ namespace ManagerServer.Service.VisitorServices
                  new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()) ,
 
              };
-            var roles = await userManager.GetRolesAsync(await userManager.FindByEmailAsync(user.Email));
-            if (roles.Count > 0)
-                foreach (var role in roles)
+            var roles = await userManager.GetRolesAsync (await userManager.FindByEmailAsync (user.Email));
+            if ( roles.Count > 0 )
+                foreach ( var role in roles )
                 {
                     //add role in token
-                    authClaims.Add(new Claim(ClaimTypes.Role, role));
+                    authClaims.Add (new Claim (ClaimTypes.Role, role));
 
                     //add role claim in token
-                    var clams = await roleManager.GetClaimsAsync(new IdentityRole(role));
-                    if (clams.Count > 0)
+                    var clams = await roleManager.GetClaimsAsync (new IdentityRole (role));
+                    if ( clams.Count > 0 )
                     {
-                        foreach (var claim in clams)
+                        foreach ( var claim in clams )
                         {
-                            authClaims.Add(claim);
+                            authClaims.Add (claim);
                         }
                     }
                 }
@@ -96,16 +95,16 @@ namespace ManagerServer.Service.VisitorServices
         }
         private string GenarateToken(IEnumerable<Claim> authClaims)
         {
-            var authenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
-            var token = new JwtSecurityToken(
+            var authenKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (configuration["JWT:Secret"]!));
+            var tokenObject = new JwtSecurityToken (
                 issuer: configuration["JWT:ValidIssuer"],
                 audience: configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddMinutes(20),
+                expires: DateTime.Now.AddMinutes (20),
                 claims: authClaims,
-                signingCredentials: new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
+                signingCredentials: new SigningCredentials (authenKey, SecurityAlgorithms.HmacSha256)
 
                 );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new JwtSecurityTokenHandler ().WriteToken (tokenObject);
         }
     }
 }
