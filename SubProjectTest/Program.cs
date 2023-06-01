@@ -1,14 +1,13 @@
-﻿using ManagerServer.Constan;
+﻿using ManagerServer.Common.Constant;
 using ManagerServer.Model.RawData;
-using uPLibrary.Networking.M2Mqtt;
 
 internal class Program
 {
     private static async Task Main(string[] args)
     {
-        var mongoDbServiceAsync = new MongoDbServiceAsync<RawDataModel>(Constans.ConnectionStringMongoDb
-                      , Constans.DbName, Constans.Mycollection);
-        var result = await mongoDbServiceAsync.DeleteAll();
+        var mongoDbServiceAsync = new MongoDbServiceAsync<RawDataModel> (Constant.ConnectionStringMongoDb
+                      , Constant.DbName, Constant.Mycollection);
+        var result = await mongoDbServiceAsync.DeleteAll ();
 
 
 

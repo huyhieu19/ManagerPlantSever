@@ -1,7 +1,7 @@
-﻿namespace ManagerServer.Constan
+﻿namespace ManagerServer.Common.Constant
 {
 
-    public static  class Constans
+    public static class Constant
     {
         public const string SystemUrl = "d6rjcudf7yfrokfyd6w84or994kffef";
         public const string ConnectionStringMongoDb = "mongodb+srv://thanhdat8791:Dat.anh3@plantdb.1ioqf7y.mongodb.net/?retryWrites=true&w=majority";
