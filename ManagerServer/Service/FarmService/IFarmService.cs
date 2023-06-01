@@ -5,9 +5,9 @@ namespace ManagerServer.Service.FarmService
 {
     public interface IFarmService
     {
-        public Task<List<FarmEntity>> GetAll();
-        public Task<bool> AddFarm(FarmQueryModel query);
-        public Task<bool> UpdateFarm(FarmQueryModel query);
-        public Task<FarmEntity> GetById(FarmQueryModel queryModel);
+        Task<List<FarmEntity>> GetAll();
+        Task<bool> AddFarm(FarmQueryModel query);
+        Task<bool> UpdateFarm(FarmQueryModel query);
+        Task<FarmEntity> GetById(FarmQueryModel queryModel);
     }
 }

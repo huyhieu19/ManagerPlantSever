@@ -5,9 +5,9 @@ namespace ManagerServer.Service.UserService
 {
     public interface IUserService
     {
-        public Task<List<AppUser>> GetAll();
-        public Task<AppUser> GetById(UserQueryModel query);
-        public Task<bool> ChangePassWord(UserQueryModel query);
+        Task<List<AppUser>> GetAll();
+        Task<AppUser> GetById(UserQueryModel query);
+        Task<bool> ChangePassWord(UserQueryModel query);
 
     }
 }

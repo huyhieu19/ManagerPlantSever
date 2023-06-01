@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ManagerServer.Migrations
 {
     /// <inheritdoc />
-    public partial class inital : Migration
+    public partial class InitTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -200,14 +200,15 @@ namespace ManagerServer.Migrations
                     Decription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FarmEntityId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ZoneEntities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ZoneEntities_FarmEntities_FarmId",
-                        column: x => x.FarmId,
+                        name: "FK_ZoneEntities_FarmEntities_FarmEntityId",
+                        column: x => x.FarmEntityId,
                         principalTable: "FarmEntities",
                         principalColumn: "Id");
                 });
@@ -303,7 +304,9 @@ namespace ManagerServer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_DeviceEntities_ZoneId",
                 table: "DeviceEntities",
-                column: "ZoneId");
+                column: "ZoneId",
+                unique: true,
+                filter: "[ZoneId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FarmEntities_OwnerId",
@@ -311,9 +314,9 @@ namespace ManagerServer.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ZoneEntities_FarmId",
+                name: "IX_ZoneEntities_FarmEntityId",
                 table: "ZoneEntities",
-                column: "FarmId");
+                column: "FarmEntityId");
         }
 
         /// <inheritdoc />

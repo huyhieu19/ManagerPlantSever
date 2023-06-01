@@ -1,9 +1,10 @@
 ﻿using ManagerServer.Service.RoleService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ManagerServer.Controllers
 {
-    [ApiController, Route("api/[controller]")]
+    [ApiController, Route ("api/[controller]")]
     public class RoleController : ControllerBase
     {
         private readonly IRoleService roleService;
@@ -12,30 +13,30 @@ namespace ManagerServer.Controllers
         {
             this.roleService = roleService;
         }
-        [HttpGet , Route("get-all")]        
-        
+        [HttpGet, Route ("get-all"), Authorize (Roles = "Admin, User, Owner")]
+
         public async Task<List<string>> GetAll()
         {
-            return await roleService.GetAllRole();
+            return await roleService.GetAllRole ();
         }
 
-        [HttpPost, Route("add-role")]
+        [HttpPost, Route ("add-role"), Authorize (Roles = "Admin, Owner")]
 
         public async Task<bool> AddRole(string name)
         {
-            return await roleService.AddRoles(name);
+            return await roleService.AddRoles (name);
         }
-        [HttpPost, Route("add-user-role")]
+        [HttpPost, Route ("add-user-role")]
 
-        public async Task<bool> GetAll(string email, string name)
+        public async Task<bool> AddUserRole(string email, string name)
         {
-            return await roleService.AddUserRoles(email,name);
+            return await roleService.AddUserRoles (email, name);
         }
-        [HttpDelete, Route("delete")]
+        [HttpDelete, Route ("delete"), Authorize (Roles = "Admin, Owner")]
 
         public async Task<bool> Delete(string name)
         {
-            return await roleService.RemoveRoles( name);
+            return await roleService.RemoveRoles (name);
         }
     }
 }
