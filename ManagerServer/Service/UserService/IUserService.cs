@@ -1,4 +1,9 @@
-﻿namespace ManagerServer.Service.UserService
+﻿using ManagerServer.Database.Entity;
+using ManagerServer.Model.Admin;
+using ManagerServer.Model.Owner;
+using ManagerServer.Model.User;
+
+namespace ManagerServer.Service.UserService
 {
     public interface IUserService
     {

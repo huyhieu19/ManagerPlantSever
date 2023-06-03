@@ -1,4 +1,8 @@
-﻿namespace ManagerServer.Service.RoleService
+﻿using ManagerServer.Database.Entity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+namespace ManagerServer.Service.RoleService
 {
     public class RoleService : IRoleService
     {
