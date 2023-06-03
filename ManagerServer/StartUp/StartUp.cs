@@ -1,18 +1,4 @@
-﻿using ManagerServer.Database;
-using ManagerServer.Database.Entity;
-using ManagerServer.Service.FarmService;
-using ManagerServer.Service.RoleService;
-using ManagerServer.Service.UserService;
-using ManagerServer.Service.VisitorServices;
-using ManagerServer.Service.ZoneService;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
-
-namespace ManagerServer.StartUp
+﻿namespace ManagerServer.StartUp
 {
     public static class StartUp
     {

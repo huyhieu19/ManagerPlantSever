@@ -1,12 +1,4 @@
-﻿using ManagerServer.Database.Entity;
-using ManagerServer.Model.Admin;
-using ManagerServer.Model.Owner;
-using ManagerServer.Model.User;
-using ManagerServer.Service.UserService;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace ManagerServer.Controllers
+﻿namespace ManagerServer.Controllers
 {
     [ApiController, Route ("api/[controller]")]
     public class UserController : ControllerBase
@@ -37,6 +29,7 @@ namespace ManagerServer.Controllers
         {
             return await service.GetById (Id);
         }
+        [HttpPost, Route ("get-byid")]
 
         [HttpGet, Route ("admins")]
         public async Task<List<AdminDisplayModel>> GetAllAdmin()

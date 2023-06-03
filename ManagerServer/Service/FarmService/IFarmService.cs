@@ -1,9 +1,4 @@
-﻿using Common.Model.Farm;
-using ManagerServer.Database.Entity;
-using ManagerServer.Model.Farm;
-using ManagerServer.Model.ResponeModel;
-
-namespace ManagerServer.Service.FarmService
+﻿namespace ManagerServer.Service.FarmService
 {
     public interface IFarmService
     {
