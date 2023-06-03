@@ -1,8 +1,4 @@
-﻿using ManagerServer.Service.RoleService;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace ManagerServer.Controllers
+﻿namespace ManagerServer.Controllers
 {
     [ApiController, Route ("api/[controller]")]
     public class RoleController : ControllerBase
@@ -20,19 +16,19 @@ namespace ManagerServer.Controllers
             return await roleService.GetAllRole ();
         }
 
-        [HttpPost, Route ("add-role"), Authorize (Roles = "Admin, Owner")]
+        [HttpPost, Route ("add-role"), Authorize (Roles = "Admin")]
 
         public async Task<bool> AddRole(string name)
         {
             return await roleService.AddRoles (name);
         }
-        [HttpPost, Route ("add-user-role")]
+        [HttpPost, Route ("add-user-role"), Authorize (Roles = "Admin, Owner")]
 
         public async Task<bool> AddUserRole(string email, string name)
         {
             return await roleService.AddUserRoles (email, name);
         }
-        [HttpDelete, Route ("delete"), Authorize (Roles = "Admin, Owner")]
+        [HttpDelete, Route ("delete"), Authorize (Roles = "Admin")]
 
         public async Task<bool> Delete(string name)
         {

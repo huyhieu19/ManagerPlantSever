@@ -1,8 +1,4 @@
-﻿using ManagerServer.Database.Entity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-namespace ManagerServer.Service.RoleService
+﻿namespace ManagerServer.Service.RoleService
 {
     public class RoleService : IRoleService
     {
@@ -23,23 +19,13 @@ namespace ManagerServer.Service.RoleService
         public async Task<bool> AddUserRoles(string email, string nameRole)
         {
             var userTemp = await userManager.FindByEmailAsync (email);
-            if ( userTemp != null )
-            {
-
-            }
             var result = await userManager.AddToRoleAsync (userTemp, nameRole);
             return result.Succeeded;
         }
 
         public async Task<List<string>> GetAllRole()
         {
-            var result = new List<string> ();
-            var roles = await roleManager.Roles.ToListAsync ();
-
-            foreach ( var role in roles )
-            {
-                result.Add (role.Name);
-            }
+            var result = await roleManager.Roles.Select (q => q.Name).ToListAsync ();
             return result;
         }
 

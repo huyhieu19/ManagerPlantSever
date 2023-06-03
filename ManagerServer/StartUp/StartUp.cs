@@ -1,26 +1,12 @@
-﻿using ManagerServer.Database;
-using ManagerServer.Database.Entity;
-using ManagerServer.Service.FarmService;
-using ManagerServer.Service.RoleService;
-using ManagerServer.Service.UserService;
-using ManagerServer.Service.VisitorServices;
-using ManagerServer.Service.ZoneService;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
-
-namespace ManagerServer.StartUp
+﻿namespace ManagerServer.StartUp
 {
     public static class StartUp
     {
         public static WebApplicationBuilder AddServicesBase(this WebApplicationBuilder builder)
         {
+
             builder.Services.AddControllers ();
             builder.Services.AddEndpointsApiExplorer ();
-
             builder.Services.AddScoped<IAuthService, AuthService> ();
             builder.Services.AddScoped<UserManager<AppUser>> ();
             builder.Services.AddScoped<SignInManager<AppUser>> ();
@@ -120,12 +106,12 @@ namespace ManagerServer.StartUp
         {
 
             app.UseSwagger ();
-
             app.UseSwaggerUI ();
             app.UseCors ("AllowAllHeaders");
             app.UseHttpsRedirection ();
             app.UseAuthentication ();
             app.UseAuthorization ();
+            //app.UseMiddleware<ApiResponseMiddleware> ();
             app.MapControllers ();
             return app;
         }

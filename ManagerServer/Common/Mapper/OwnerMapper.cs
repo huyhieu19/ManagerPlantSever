@@ -7,7 +7,7 @@ namespace ManagerServer.Common.Mapper
     {
         public static OwnerDisplayModel ToOwnerModel(this AppUser appUser)
         {
-            return new OwnerDisplayModel()
+            return new OwnerDisplayModel ()
             {
                 FirstName = appUser.FirstName,
                 LastName = appUser.LastName,

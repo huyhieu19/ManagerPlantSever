@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Common.Model.Farm
+namespace ManagerServer.Model.Farm
 {
-    public class FarmQueryModel
+    public class FarmUpdateModel
     {
         [Required]
-        public string OwnerID { get; set; } = string.Empty;
+        public int? Id { get; set; }
+        [Required]
+        public string? OwnerID { get; set; }
         [Required]
         public string? FarmName { get; set; }
         [Required]

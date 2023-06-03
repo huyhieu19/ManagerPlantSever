@@ -1,10 +1,4 @@
-﻿using ManagerServer.Database.Entity;
-using ManagerServer.Model.User;
-using ManagerServer.Service.UserService;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace ManagerServer.Controllers
+﻿namespace ManagerServer.Controllers
 {
     [ApiController, Route ("api/[controller]")]
     public class UserController : ControllerBase
@@ -29,11 +23,28 @@ namespace ManagerServer.Controllers
         {
             return await service.GetAll ();
         }
+        [HttpGet, Route ("get-byid")]
+
+        public async Task<AppUser> GetById([FromQuery] string Id)
+        {
+            return await service.GetById (Id);
+        }
         [HttpPost, Route ("get-byid")]
 
-        public async Task<AppUser> GetById(UserQueryModel query)
+        [HttpGet, Route ("admins")]
+        public async Task<List<AdminDisplayModel>> GetAllAdmin()
         {
-            return await service.GetById (query);
+            return await service.GetAllAdmin ();
+        }
+        [HttpGet, Route ("owners")]
+        public async Task<List<OwnerDisplayModel>> GetAllOwner()
+        {
+            return await service.GetAllOwner ();
+        }
+        [HttpGet, Route ("users")]
+        public async Task<List<UserDisplayModel>> GetAllUser()
+        {
+            return await service.GetAllUser ();
         }
     }
 }

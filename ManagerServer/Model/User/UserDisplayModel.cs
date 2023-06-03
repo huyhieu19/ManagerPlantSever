@@ -1,8 +1,8 @@
-﻿namespace ManagerServer.Model.Owner
+﻿namespace ManagerServer.Model.User
 {
-    public class OwnerDisplayModel
+    public class UserDisplayModel
     {
-        public string? OwnerId { get; set; }
+        public string? UserId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? EmailAddress { get; set; }
