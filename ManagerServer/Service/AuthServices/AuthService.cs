@@ -1,5 +1,6 @@
 ﻿using ManagerServer.Database.Entity;
 using ManagerServer.Model;
+using ManagerServer.Model.Authr;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -56,6 +57,10 @@ namespace ManagerServer.Service.VisitorServices
             var result = await userManager.CreateAsync (user, model.Password);
             if ( result.Succeeded )
             {
+                //add role admin tam thoi de dung het chuc nang
+                var userAdd = await userManager.FindByEmailAsync(user.Email);
+                await userManager.AddToRoleAsync(userAdd, "Admin");
+
                 var tempUser = await userManager.FindByEmailAsync (model.Email);
                 var authClaims = await GetAuthClaims (tempUser);
                 var token = GenarateToken (authClaims);
@@ -105,6 +110,45 @@ namespace ManagerServer.Service.VisitorServices
 
                 );
             return new JwtSecurityTokenHandler ().WriteToken (tokenObject);
+        }
+
+        public async Task<AppUser> Getinfo(AutherRequest request)
+        {
+
+            // Khóa bí mật đối xứng
+            string secretKey = configuration["JWT:Secret"];
+            var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+            // Xác định các thông tin cần thiết cho việc giải mã
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["JWT:ValidIssuer"],
+                ValidAudience = configuration["JWT:ValidAudience"],
+                IssuerSigningKey = symmetricKey
+            };
+
+            try
+            {
+                // Giải mã và xác minh tính hợp lệ của token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var claimsPrincipal = tokenHandler.ValidateToken(request.Token!, tokenValidationParameters, out var validatedToken);
+
+                // Lấy thông tin từ token
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
+                
+                var user = await userManager.FindByIdAsync (userId);
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using ManagerServer.Database;
 using ManagerServer.Model;
+using ManagerServer.Model.Authr;
 using ManagerServer.Service.VisitorServices;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ManagerServer.Controllers
 {
@@ -54,6 +57,26 @@ namespace ManagerServer.Controllers
             catch ( Exception ex )
             {
                 return Ok (new
+                {
+                    code = -1,
+                });
+            }
+        }
+        [HttpPost("getinfor")]
+        public async Task<IActionResult> Getinfor([FromBody] AutherRequest request)
+        {
+            try
+            {
+                var result = await visitorService.Getinfo(request);
+                return new ObjectResult(new
+                {
+                    code = 0,
+                    data = result,
+                });
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new
                 {
                     code = -1,
                 });
