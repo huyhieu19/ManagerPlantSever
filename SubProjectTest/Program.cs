@@ -1,13 +1,22 @@
 ﻿using ManagerServer.Common.Constant;
 using ManagerServer.Model.RawData;
+using System.Text;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 internal class Program
 {
-    private static async Task Main(string[] args)
+    private static  void  Main(string[] args)
     {
-        var mongoDbServiceAsync = new MongoDbServiceAsync<RawDataModel> (Constant.ConnectionStringMongoDb
-                      , Constant.DbName, Constant.Mycollection);
-        var result = await mongoDbServiceAsync.DeleteAll ();
+        MqttClient client = new MqttClient("broker.emqx.io");
+        var a = Guid.NewGuid().ToString();
+
+        client.Connect(a);
+        client.MqttMsgPublishReceived += (s, e) =>
+        {
+            Console.WriteLine(e.Topic.ToString() +": " + Encoding.UTF8.GetString(e.Message) );
+        };
+        client.Subscribe(new string[] { Constant.SystemUrl + "/#" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
 
 
 

@@ -20,7 +20,8 @@ namespace ManagerServer.Controllers
             return await roleService.GetAllRole ();
         }
 
-        [HttpPost, Route ("add-role"), Authorize (Roles = "Admin")]
+        [HttpPost, Route ("add-role")]
+        //[Authorize(Roles = "Admin")]
 
         public async Task<bool> AddRole(string name)
         {

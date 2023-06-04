@@ -37,8 +37,9 @@ namespace ManagerServer.Service
         }
         public void SubcribeSystemDefault()
         {
-            this.Subcribe (new string[] { topicTest + "/1" + "/R" + "/Temparute" });
-            this.Subcribe (new string[] { topicTest + "/1" + "/R" + "/Mosuli" });
+            //this.Subcribe (new string[] { topicTest + "/1" + "/R" + "/Temparute" });
+            //this.Subcribe (new string[] { topicTest + "/1" + "/R" + "/Mosuli" });
+            //this.Subcribe (new string[] { topicTest + "/1" + "/R" + "/Brightness" });
         }
         public async Task SenFakeData()
         {
@@ -51,8 +52,10 @@ namespace ManagerServer.Service
 
                     var mosuli = new Random ().Next (70, 80);
                     this.Publish (topicTest + "/1" + "/R" + $"/{TopicType.Moisture}", mosuli.ToString ());
-                    var human = new Random ().Next (70, 80);
-                    this.Publish (topicTest + "/1" + "/R" + $"/{TopicType.Humidity}", human.ToString ());
+                    var human = new Random().Next(70, 80);
+                    this.Publish(topicTest + "/1" + "/R" + $"/{TopicType.Humidity}", human.ToString());
+                    var bigh = new Random().Next(70, 80);
+                    this.Publish(topicTest + "/1" + "/R" + $"/{TopicType.Brightness}", bigh.ToString());
 
 
                     this.Publish (topicTest + "/1" + "/W" + $"/{TopicType.IsOnFan}", 0.ToString ());

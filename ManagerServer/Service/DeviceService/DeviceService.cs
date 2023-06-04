@@ -1,5 +1,6 @@
 ﻿using ManagerServer.Database;
 using ManagerServer.Database.Entity;
+using ManagerServer.Model.Device;
 using Microsoft.EntityFrameworkCore;
 
 namespace ManagerServer.Service.DeviceService
@@ -18,17 +19,17 @@ namespace ManagerServer.Service.DeviceService
             return result;
         }
 
-        public async Task<DeviceEntity> GetById(int id)
+        public async Task<DeviceEntity> GetById(DeviceRequestModel requestModel)
         {
-            return await dbContext.DeviceEntities.FirstOrDefaultAsync(p=>p.Id ==id);
+            return await dbContext.DeviceEntities.FirstOrDefaultAsync(p=>p.Id ==requestModel.DeviceId);
         }
 
-        public async Task<bool> SetDeviceToZone(int zoneId, int DeviceId)
+        public async Task<bool> SetDeviceToZone(DeviceRequestModel requestModel)
         {
-            var device = await dbContext.DeviceEntities.FirstOrDefaultAsync(p => p.Id == DeviceId);
+            var device = await dbContext.DeviceEntities.FirstOrDefaultAsync(p => p.Id == requestModel.DeviceId);
             if (device != null)
             {
-                device.ZoneId = zoneId;
+                device.ZoneId = requestModel.ZoneId;
             };
             return true;
         }

@@ -14,7 +14,6 @@ namespace ManagerServer.Database.Entity
         public DateTime? CreateAt { get; set; } = DateTime.Now;
         public DateTime? UpdateAt { get; set; }
         public string? Image { get; set; }
-        [InverseProperty("ZoneEntity")]
-        public virtual DeviceEntity? DeviceEntity { get; set; }
+        public List<DeviceEntity>? DeviceEntity { get; set; }
     }
 }
