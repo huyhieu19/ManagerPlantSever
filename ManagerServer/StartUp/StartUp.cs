@@ -1,5 +1,6 @@
 ﻿using ManagerServer.Database;
 using ManagerServer.Database.Entity;
+using ManagerServer.Service.DeviceService;
 using ManagerServer.Service.FarmService;
 using ManagerServer.Service.RoleService;
 using ManagerServer.Service.UserService;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyProject.Services;
 using System.Text;
 
 namespace ManagerServer.StartUp
@@ -30,6 +32,7 @@ namespace ManagerServer.StartUp
             builder.Services.AddScoped<IUserService, UserService> ();
             builder.Services.AddScoped<IFarmService, FarmService> ();
             builder.Services.AddScoped<IZoneService, ZoneService> ();
+            builder.Services.AddScoped<IDeviceService, DeviceService> ();
 
             builder.Services.AddCors (options =>
             {
@@ -46,7 +49,7 @@ namespace ManagerServer.StartUp
         }
         public static WebApplicationBuilder AddBackgroundServices(this WebApplicationBuilder builder)
         {
-            //builder.Services.AddHostedService<ListeningService>();
+            builder.Services.AddHostedService<ListeningService>();
             //builder.Services.AddHostedService<ProcessDataService>();
             return builder;
         }

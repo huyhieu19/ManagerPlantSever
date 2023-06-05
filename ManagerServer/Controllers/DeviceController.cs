@@ -1,4 +1,5 @@
 ﻿using ManagerServer.Database.Entity;
+using ManagerServer.Model.Device;
 using ManagerServer.Service.DeviceService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,11 @@ namespace ManagerServer.Controllers
         {
             return await service.GetAllDevice();
         }
-
+        [HttpPost, Route("setzone")]
+        public async Task<bool> SetZone([FromBody] DeviceRequestModel requestModel)
+        {
+            return await service.SetDeviceToZone(requestModel);
+        }
 
     }
 }
