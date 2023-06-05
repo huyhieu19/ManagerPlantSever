@@ -57,10 +57,10 @@ namespace MyProject.Services
         {
             try
             {
-                using (var context = new ManagerDbContext(builder.Options))
-                {
-                    //save
-                }
+                //using (var context = new ManagerDbContext(builder.Options))
+                //{
+                //    //save
+                //}
                 return await Task.FromResult(true);
 
             }
