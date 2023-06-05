@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MyProject.Services;
 using System.Text;
 
 namespace ManagerServer.StartUp
@@ -49,7 +48,7 @@ namespace ManagerServer.StartUp
         }
         public static WebApplicationBuilder AddBackgroundServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddHostedService<ListeningService>();
+            //builder.Services.AddHostedService<ListeningService>();
             //builder.Services.AddHostedService<ProcessDataService>();
             return builder;
         }
