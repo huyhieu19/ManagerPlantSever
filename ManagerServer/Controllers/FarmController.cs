@@ -20,8 +20,8 @@ namespace ManagerServer.Controllers
         }
         [HttpPost, Route ("add")]
         public async Task<ResponseModel<bool>> AddFarm([FromBody] FarmQueryModel queryModel)
-        {
-            return await service.AddFarm (queryModel);
+        { 
+            return await service.AddFarm (queryModel,getTokenFromHeader(HttpContext));
         }
         [HttpGet, Route ("get-all")]
 
@@ -41,11 +41,28 @@ namespace ManagerServer.Controllers
         {
             return await service.GetById (Id);
         }
-        [HttpPost, Route("getbytoken")]
+        [HttpGet, Route("getbytoken")]
 
-        public async Task<List<FarmEntity>> GetbyToken([FromBody] TokenRequestBase requestBase)
+        public async Task<List<FarmEntity>> GetbyToken()
         {
-            return await service.GetByOwnerId (requestBase);
+            return await service.GetByOwnerId (getTokenFromHeader(HttpContext));
         }
+        [HttpGet, Route("takeheadertoken")]
+
+        public async Task<IActionResult> TakeHeader()
+        {
+            
+            return Ok(getTokenFromHeader(HttpContext));
+        }
+
+        public static string getTokenFromHeader(HttpContext contex)
+        {
+            contex.Request.Headers.TryGetValue("Authorization", out var token);
+            var result = token.ToString();
+            result = result.Substring(6).Trim();
+            return result;
+        }
+
+
     }
 }

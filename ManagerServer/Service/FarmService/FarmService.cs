@@ -1,4 +1,4 @@
-﻿using Azure.Core;
+﻿ using Azure.Core;
 using Common.Model.Farm;
 using ManagerServer.Database;
 using ManagerServer.Database.Entity;
@@ -24,9 +24,9 @@ namespace ManagerServer.Service.FarmService
             this.dbContext = dbContext;
             this.configuration = configuration;
         }
-        public async Task<ResponseModel<bool>> AddFarm(FarmQueryModel queryModel)
+        public async Task<ResponseModel<bool>> AddFarm(FarmQueryModel queryModel, string token)
         {
-            var ownerId = GetIdbyToken(queryModel.Token);
+            var ownerId = GetIdbyToken(token);
             
                 var farm = new FarmEntity ()
                 {
@@ -67,12 +67,12 @@ namespace ManagerServer.Service.FarmService
             return Result;
         }
 
-        public async Task<List<FarmEntity>> GetByOwnerId(TokenRequestBase tokenRequest)
+        public async Task<List<FarmEntity>> GetByOwnerId(string token)
         {
            
             try
             {
-                string userId = this.GetIdbyToken(tokenRequest.Token);
+                string userId = this.GetIdbyToken(token);
                 var query = from data in dbContext.FarmEntities
                             where data.OwnerId == userId
                             select data;
