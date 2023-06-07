@@ -9,9 +9,9 @@ namespace ManagerServer.Service.FarmService
     public interface IFarmService
     {
         Task<List<FarmEntity>> GetAll();
-        Task<ResponseModel<bool>> AddFarm(FarmQueryModel query);
+        Task<ResponseModel<bool>> AddFarm(FarmQueryModel query,string token);
         Task<bool> UpdateFarm(FarmUpdateModel query);
         Task<FarmEntity> GetById(int Id);
-        Task<List<FarmEntity>> GetByOwnerId(TokenRequestBase tokenRequest);
+        Task<List<FarmEntity>> GetByOwnerId(string token);
     }
 }
