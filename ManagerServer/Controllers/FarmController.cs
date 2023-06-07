@@ -1,5 +1,6 @@
 ﻿using Common.Model.Farm;
 using ManagerServer.Database.Entity;
+using ManagerServer.Model;
 using ManagerServer.Model.Farm;
 using ManagerServer.Model.ResponeModel;
 using ManagerServer.Service.FarmService;
@@ -39,6 +40,12 @@ namespace ManagerServer.Controllers
         public async Task<FarmEntity> GetById(int Id)
         {
             return await service.GetById (Id);
+        }
+        [HttpPost, Route("getbytoken")]
+
+        public async Task<List<FarmEntity>> GetbyToken([FromBody] TokenRequestBase requestBase)
+        {
+            return await service.GetByOwnerId (requestBase);
         }
     }
 }
