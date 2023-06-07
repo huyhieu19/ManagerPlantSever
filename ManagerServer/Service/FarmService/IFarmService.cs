@@ -1,5 +1,6 @@
 ﻿using Common.Model.Farm;
 using ManagerServer.Database.Entity;
+using ManagerServer.Model;
 using ManagerServer.Model.Farm;
 using ManagerServer.Model.ResponeModel;
 
@@ -11,5 +12,6 @@ namespace ManagerServer.Service.FarmService
         Task<ResponseModel<bool>> AddFarm(FarmQueryModel query);
         Task<bool> UpdateFarm(FarmUpdateModel query);
         Task<FarmEntity> GetById(int Id);
+        Task<List<FarmEntity>> GetByOwnerId(TokenRequestBase tokenRequest);
     }
 }

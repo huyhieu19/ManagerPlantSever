@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ManagerServer.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.Model.Farm
 {
-    public class FarmQueryModel
+    public class FarmQueryModel: TokenRequestBase
     {
         [Required]
         public string OwnerID { get; set; } = string.Empty;
