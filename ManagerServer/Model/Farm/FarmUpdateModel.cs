@@ -7,8 +7,6 @@ namespace ManagerServer.Model.Farm
         [Required]
         public int? Id { get; set; }
         [Required]
-        public string? OwnerID { get; set; }
-        [Required]
         public string? FarmName { get; set; }
         [Required]
         public string? FarmDescription { get; set; }
