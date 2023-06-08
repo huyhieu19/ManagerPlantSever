@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManagerServer.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    [Migration("20230604203133_changeRelationShip")]
-    partial class changeRelationShip
+    [Migration("20230608200143_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -125,8 +125,8 @@ namespace ManagerServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DeviceId")
-                        .HasColumnType("int");
+                    b.Property<string>("DeviceId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Payload")
                         .HasColumnType("nvarchar(max)");
@@ -149,11 +149,8 @@ namespace ManagerServer.Migrations
 
             modelBuilder.Entity("ManagerServer.Database.Entity.DeviceEntity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("DateCreate")
                         .HasColumnType("datetime2");

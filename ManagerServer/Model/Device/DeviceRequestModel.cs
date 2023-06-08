@@ -2,7 +2,7 @@
 {
     public class DeviceRequestModel
     {
-        public int? DeviceId{ get; set; }
+        public string? DeviceId{ get; set; }
         public int? ZoneId{ get; set; }
     }
 }

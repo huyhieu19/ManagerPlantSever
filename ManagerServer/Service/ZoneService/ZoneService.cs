@@ -1,5 +1,6 @@
 ﻿using ManagerServer.Database;
 using ManagerServer.Database.Entity;
+using ManagerServer.Model.ResponeModel;
 using ManagerServer.Model.Zone;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,18 @@ namespace ManagerServer.Service.ZoneService
         {
             var result = await dbContext.ZoneEntities.ToListAsync();
             return result;
+        }
+
+        public async Task<ResponseModel<List<ZoneEntity>>> GetZoneByFarmId(ZoneQueryModel queryModel)
+        {
+            return new ResponseModel<List<ZoneEntity>>()
+            {
+                code = 1,
+                message = "Succes get zone",
+                data =  await (from data in dbContext.ZoneEntities
+                               where data.FarmId == queryModel.FarmId
+                               select data).ToListAsync()
+            };
         }
 
         public async Task<ZoneEntity> GetZoneById(ZoneQueryModel queryModel)

@@ -1,5 +1,6 @@
 ﻿using ManagerServer.Database.Entity;
 using ManagerServer.Model.Device;
+using ManagerServer.Model.ResponeModel;
 using ManagerServer.Service.DeviceService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,9 +21,19 @@ namespace ManagerServer.Controllers
             return await service.GetAllDevice();
         }
         [HttpPost, Route("setzone")]
-        public async Task<bool> SetZone([FromBody] DeviceRequestModel requestModel)
+        public async Task<ResponseModel<bool>> SetZone([FromBody] DeviceRequestModel requestModel)
         {
             return await service.SetDeviceToZone(requestModel);
+        }
+        [HttpPost, Route("getdeviceative")]
+        public async Task<ResponseModel<List<DeviceEntity>>> GetDeviceAtive([FromBody] DeviceRequestModel requestModel)
+        {
+            return await service.GetDeviceAtive(requestModel);
+        }
+        [HttpPost, Route("getdevicebyzoneid")]
+        public async Task<ResponseModel<List<DeviceEntity>>> GetDeviceByZoneId([FromBody] DeviceRequestModel requestModel)
+        {
+            return await service.GetDeviceByZoneId(requestModel);
         }
 
     }
