@@ -12,7 +12,7 @@ namespace ManagerServer.Database.Entity
         public string? Payload { get; set; }
         public DateTime? RetrieveAt { get; set; }
         public string? Type { get; set; }
-        public int? DeviceId { get; set; }
+        public string? DeviceId { get; set; }
         public DeviceEntity? Device { get; set; }
     }
 }

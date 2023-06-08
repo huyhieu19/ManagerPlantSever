@@ -48,7 +48,7 @@ namespace ManagerServer.StartUp
         }
         public static WebApplicationBuilder AddBackgroundServices(this WebApplicationBuilder builder)
         {
-            //builder.Services.AddHostedService<ListeningService>();
+            builder.Services.AddHostedService<MyProject.Services.ListeningService>();
             //builder.Services.AddHostedService<ProcessDataService>();
             return builder;
         }
