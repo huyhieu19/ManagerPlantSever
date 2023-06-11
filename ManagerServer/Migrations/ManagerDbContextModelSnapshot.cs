@@ -122,8 +122,8 @@ namespace ManagerServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DeviceId")
-                        .HasColumnType("int");
+                    b.Property<string>("DeviceId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Payload")
                         .HasColumnType("nvarchar(max)");
@@ -146,11 +146,8 @@ namespace ManagerServer.Migrations
 
             modelBuilder.Entity("ManagerServer.Database.Entity.DeviceEntity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("DateCreate")
                         .HasColumnType("datetime2");

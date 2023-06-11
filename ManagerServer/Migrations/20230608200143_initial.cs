@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ManagerServer.Migrations
 {
     /// <inheritdoc />
-    public partial class InitTable : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -217,20 +217,20 @@ namespace ManagerServer.Migrations
                 name: "DeviceEntities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Decription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: true),
-                    ZoneId = table.Column<int>(type: "int", nullable: true)
+                    ZoneId = table.Column<int>(type: "int", nullable: true),
+                    ZoneEntityId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DeviceEntities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DeviceEntities_ZoneEntities_ZoneId",
-                        column: x => x.ZoneId,
+                        name: "FK_DeviceEntities_ZoneEntities_ZoneEntityId",
+                        column: x => x.ZoneEntityId,
                         principalTable: "ZoneEntities",
                         principalColumn: "Id");
                 });
@@ -245,7 +245,7 @@ namespace ManagerServer.Migrations
                     Payload = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RetrieveAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeviceId = table.Column<int>(type: "int", nullable: true)
+                    DeviceId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -302,11 +302,9 @@ namespace ManagerServer.Migrations
                 column: "DeviceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DeviceEntities_ZoneId",
+                name: "IX_DeviceEntities_ZoneEntityId",
                 table: "DeviceEntities",
-                column: "ZoneId",
-                unique: true,
-                filter: "[ZoneId] IS NOT NULL");
+                column: "ZoneEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FarmEntities_OwnerId",

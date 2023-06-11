@@ -1,4 +1,5 @@
 ﻿using ManagerServer.Database.Entity;
+using ManagerServer.Model.ResponeModel;
 using ManagerServer.Model.Zone;
 using ManagerServer.Service.ZoneService;
 using Microsoft.AspNetCore.Mvc;
@@ -26,14 +27,19 @@ namespace ManagerServer.Controllers
             return await service.GetAllZones();
         }
         [HttpPost, Route("get-byid")]
-        public async Task<ZoneEntity> GetZoneById(ZoneQueryModel queryModel)
+        public async Task<ZoneEntity> GetZoneById([FromBody] ZoneQueryModel queryModel)
         {
            return await service.GetZoneById(queryModel);
         }
         [HttpPost, Route("update")]
-        public async Task<bool> UpdateZone(ZoneQueryModel queryModel)
+        public async Task<bool> UpdateZone([FromBody] ZoneQueryModel queryModel)
         {
            return await service.UpdateZone(queryModel);
+        }
+        [HttpPost, Route("getby-farmid")]
+        public async Task<ResponseModel<List<ZoneEntity>>> GetbyFarmId([FromBody]ZoneQueryModel queryModel)
+        {
+            return await service.GetZoneByFarmId(queryModel);
         }
     }
 }
