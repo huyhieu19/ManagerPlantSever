@@ -144,8 +144,8 @@ namespace ManagerServer.Service.FarmService
                 if ( farm != null )
                 {
                     if ( query.FarmName != null ) farm.Name = query.FarmName;
-                    farm.Adress = query.Adress;
-                    farm.Avata = query.Avata;
+                    if ( query.Adress != null ) farm.Adress = query.Adress;
+                    if ( query.Avata != null ) farm.Avata = query.Avata;
                     farm.UpdateAt = DateTime.Now;
                 }
                 return await dbContext.SaveChangesAsync () > 0;
