@@ -1,14 +1,12 @@
-﻿using Common.Model;
-using ManagerServer.Database.Entity;
-using Microsoft.AspNetCore.Identity;
+﻿using ManagerServer.Database.Entity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ManagerServer.Database
 {
-    public class ManagerDbContext: IdentityDbContext<AppUser>
+    public class ManagerDbContext : IdentityDbContext<AppUser>
     {
-        public ManagerDbContext(DbContextOptions<ManagerDbContext> options): base(options)
+        public ManagerDbContext(DbContextOptions<ManagerDbContext> options) : base (options)
         {
 
         }
@@ -23,5 +21,6 @@ namespace ManagerServer.Database
         public DbSet<FarmEntity> FarmEntities { get; set; }
         public DbSet<ZoneEntity> ZoneEntities { get; set; }
         public DbSet<DeviceEntity> DeviceEntities { get; set; }
+        public DbSet<DeviceActionEntity> DeviceActionEntities { get; set; }
     }
 }

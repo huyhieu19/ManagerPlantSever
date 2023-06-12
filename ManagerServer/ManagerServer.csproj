@@ -28,6 +28,7 @@
   <ItemGroup>
     <Folder Include="AdminService\" />
     <Folder Include="Controllers\Garbage\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
