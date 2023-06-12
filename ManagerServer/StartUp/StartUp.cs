@@ -1,5 +1,6 @@
 ﻿using ManagerServer.Database;
 using ManagerServer.Database.Entity;
+using ManagerServer.Service.BaseService;
 using ManagerServer.Service.DeviceService;
 using ManagerServer.Service.FarmService;
 using ManagerServer.Service.RoleService;
@@ -26,6 +27,7 @@ namespace ManagerServer.StartUp
             builder.Services.AddScoped<UserManager<AppUser>> ();
             builder.Services.AddScoped<SignInManager<AppUser>> ();
             builder.Services.AddScoped<RoleManager<IdentityRole>> ();
+            builder.Services.AddScoped<IBaseService, BaseService> ();
             builder.Services.AddScoped<IRoleService, RoleService> ();
             builder.Services.AddScoped<IAuthService, AuthService> ();
             builder.Services.AddScoped<IUserService, UserService> ();
@@ -48,7 +50,7 @@ namespace ManagerServer.StartUp
         }
         public static WebApplicationBuilder AddBackgroundServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddHostedService<MyProject.Services.ListeningService>();
+            builder.Services.AddHostedService<MyProject.Services.ListeningService> ();
             //builder.Services.AddHostedService<ProcessDataService>();
             return builder;
         }
