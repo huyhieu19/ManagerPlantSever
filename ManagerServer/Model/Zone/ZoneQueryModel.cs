@@ -1,6 +1,6 @@
 ﻿namespace ManagerServer.Model.Zone
 {
-    public class ZoneQueryModel
+    public class ZoneQueryModel : BaseQueryModel
     {
         public int? Id { get; set; }
         public string? ZoneName { get; set; }

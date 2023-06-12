@@ -16,7 +16,7 @@ namespace ManagerServer.Service.ZoneService
         }
         public async Task<bool> CreateZone(ZoneQueryModel queryModel)
         {
-            var zone = new ZoneEntity()
+            var zone = new ZoneEntity ()
             {
                 Name = queryModel.ZoneName,
                 Decription = queryModel.Decription,
@@ -24,45 +24,68 @@ namespace ManagerServer.Service.ZoneService
                 FarmId = queryModel.FarmId,
                 UpdateAt = DateTime.Now
             };
-            await dbContext.AddAsync(zone);
-            return await dbContext.SaveChangesAsync() > 0;
+            await dbContext.AddAsync (zone);
+            return await dbContext.SaveChangesAsync () > 0;
         }
 
         public async Task<List<ZoneEntity>> GetAllZones()
         {
-            var result = await dbContext.ZoneEntities.ToListAsync();
+            var result = await dbContext.ZoneEntities.ToListAsync ();
             return result;
         }
 
         public async Task<ResponseModel<List<ZoneEntity>>> GetZoneByFarmId(ZoneQueryModel queryModel)
         {
-            return new ResponseModel<List<ZoneEntity>>()
+
+
+            IQueryable<ZoneEntity> queryable = dbContext.ZoneEntities.Where (q => q.FarmId == queryModel.FarmId).AsQueryable ();
+            if ( !string.IsNullOrEmpty (queryModel.searchTerm) )
+            {
+                queryable = queryable.Where (q => q.Name.ToLower ().Contains (queryModel.searchTerm.ToLower ()));
+            }
+            if ( queryModel.filterType != Common.Enum.FilterType.None )
+            {
+                switch ( queryModel.filterType )
+                {
+                    case Common.Enum.FilterType.SortByA_Z:
+                        queryable = queryable.OrderBy (q => q.Name);
+                        break;
+                    case Common.Enum.FilterType.SortByA_ZReverse:
+                        queryable = queryable.OrderByDescending (q => q.Name);
+                        break;
+                    case Common.Enum.FilterType.SortByDate:
+                        queryable = queryable.OrderBy (q => q.CreateAt);
+                        break;
+                    case Common.Enum.FilterType.SortByDateReverse:
+                        queryable = queryable.OrderByDescending (q => q.CreateAt);
+                        break;
+                }
+            }
+            return new ResponseModel<List<ZoneEntity>> ()
             {
                 code = 1,
                 message = "Succes get zone",
-                data =  await (from data in dbContext.ZoneEntities
-                               where data.FarmId == queryModel.FarmId
-                               select data).ToListAsync()
+                data = await queryable.ToListAsync ()
             };
         }
 
         public async Task<ZoneEntity> GetZoneById(ZoneQueryModel queryModel)
         {
-            var result = await dbContext.ZoneEntities.FirstOrDefaultAsync(p => p.Id == queryModel.Id);
+            var result = await dbContext.ZoneEntities.FirstOrDefaultAsync (p => p.Id == queryModel.Id);
             return result;
         }
 
         public async Task<bool> UpdateZone(ZoneQueryModel queryModel)
         {
-            var zone = await dbContext.ZoneEntities.FirstOrDefaultAsync(p=>p.Id ==queryModel.Id);
-            if( zone!= null)
+            var zone = await dbContext.ZoneEntities.FirstOrDefaultAsync (p => p.Id == queryModel.Id);
+            if ( zone != null )
             {
-                if(queryModel.ZoneName!=null) zone.Name = queryModel.ZoneName;
-                if(queryModel.Decription!=null) zone.Decription = queryModel.Decription;
-                if(queryModel.Image!=null) zone.Image = queryModel.Image;
-                if(queryModel.FarmId!=null) zone.FarmId = queryModel.FarmId;
+                if ( queryModel.ZoneName != null ) zone.Name = queryModel.ZoneName;
+                if ( queryModel.Decription != null ) zone.Decription = queryModel.Decription;
+                if ( queryModel.Image != null ) zone.Image = queryModel.Image;
+                if ( queryModel.FarmId != null ) zone.FarmId = queryModel.FarmId;
             }
-            return await dbContext.SaveChangesAsync() > 0;
+            return await dbContext.SaveChangesAsync () > 0;
         }
     }
 }
