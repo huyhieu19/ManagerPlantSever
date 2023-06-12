@@ -83,7 +83,7 @@ namespace ManagerServer.Service.FarmService
             try
             {
                 string userId = this.GetIdbyToken (token);
-                IQueryable<FarmEntity> farmsQuery = dbContext.FarmEntities;
+                IQueryable<FarmEntity> farmsQuery = dbContext.FarmEntities.AsNoTracking ().AsQueryable ();
                 if ( !string.IsNullOrEmpty (baseQueryModel.searchTerm) )
                 {
                     farmsQuery = farmsQuery.Where (q => q.Name.ToUpper ().Contains (baseQueryModel.searchTerm.ToUpper ()));
