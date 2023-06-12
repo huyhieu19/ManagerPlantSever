@@ -1,6 +1,8 @@
 ﻿using Common.Model.Farm;
+using ManagerServer.Common.Enum;
 using ManagerServer.Database;
 using ManagerServer.Database.Entity;
+using ManagerServer.Model;
 using ManagerServer.Model.Farm;
 using ManagerServer.Model.ResponeModel;
 using ManagerServer.Service.UserService;
@@ -75,13 +77,36 @@ namespace ManagerServer.Service.FarmService
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<ResponseModel<List<FarmEntity>>> GetByOwnerId(string token)
+        public async Task<ResponseModel<List<FarmEntity>>> GetByOwnerId(string token, BaseQueryModel baseQueryModel)
         {
 
             try
             {
                 string userId = this.GetIdbyToken (token);
-                var farms = await dbContext.FarmEntities.Where (p => p.OwnerId.Equals (userId)).ToListAsync ();
+                IQueryable<FarmEntity> farmsQuery = dbContext.FarmEntities;
+                if ( !string.IsNullOrEmpty (baseQueryModel.searchTerm) )
+                {
+                    farmsQuery = farmsQuery.Where (q => q.Name.ToUpper ().Contains (baseQueryModel.searchTerm.ToUpper ()));
+                }
+                if ( baseQueryModel.filterType != FilterType.None )
+                {
+                    switch ( baseQueryModel.filterType )
+                    {
+                        case FilterType.SortByA_Z:
+                            farmsQuery = farmsQuery.OrderBy (q => q.Name);
+                            break;
+                        case FilterType.SortByA_ZReverse:
+                            farmsQuery = farmsQuery.OrderByDescending (q => q.Name);
+                            break;
+                        case FilterType.SortByDate:
+                            farmsQuery = farmsQuery.OrderBy (q => q.CreateAt);
+                            break;
+                        case FilterType.SortByDateReverse:
+                            farmsQuery = farmsQuery.OrderByDescending (q => q.CreateAt);
+                            break;
+                    }
+                }
+                var farms = await farmsQuery.ToListAsync ();
                 return new ResponseModel<List<FarmEntity>> ()
                 {
                     code = 1,

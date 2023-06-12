@@ -58,8 +58,8 @@ namespace ManagerServer.Service.VisitorServices
             if ( result.Succeeded )
             {
                 //add role admin tam thoi de dung het chuc nang
-                var userAdd = await userManager.FindByEmailAsync(user.Email);
-                await userManager.AddToRoleAsync(userAdd, "Admin");
+                var userAdd = await userManager.FindByEmailAsync (user.Email);
+                await userManager.AddToRoleAsync (userAdd, "Admin");
 
                 var tempUser = await userManager.FindByEmailAsync (model.Email);
                 var authClaims = await GetAuthClaims (tempUser);
@@ -104,7 +104,7 @@ namespace ManagerServer.Service.VisitorServices
             var tokenObject = new JwtSecurityToken (
                 issuer: configuration["JWT:ValidIssuer"],
                 audience: configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddMinutes (20),
+                expires: DateTime.Now.AddMinutes (200),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials (authenKey, SecurityAlgorithms.HmacSha256)
 
@@ -117,7 +117,7 @@ namespace ManagerServer.Service.VisitorServices
 
             // Khóa bí mật đối xứng
             string secretKey = configuration["JWT:Secret"];
-            var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+            var symmetricKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (secretKey));
 
             // Xác định các thông tin cần thiết cho việc giải mã
             var tokenValidationParameters = new TokenValidationParameters
@@ -133,22 +133,22 @@ namespace ManagerServer.Service.VisitorServices
             try
             {
                 // Giải mã và xác minh tính hợp lệ của token
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var claimsPrincipal = tokenHandler.ValidateToken(request.Token!, tokenValidationParameters, out var validatedToken);
+                var tokenHandler = new JwtSecurityTokenHandler ();
+                var claimsPrincipal = tokenHandler.ValidateToken (request.Token!, tokenValidationParameters, out var validatedToken);
 
                 // Lấy thông tin từ token
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "Id")?.Value;
-                
+                var userId = jwtToken.Claims.FirstOrDefault (c => c.Type == "Id")?.Value;
+
                 var user = await userManager.FindByIdAsync (userId);
 
                 return user;
             }
-            catch (Exception ex)
+            catch ( Exception ex )
             {
                 throw;
             }
-            
+
         }
     }
 }

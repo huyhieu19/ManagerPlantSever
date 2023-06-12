@@ -1,5 +1,6 @@
 ﻿using Common.Model.Farm;
 using ManagerServer.Database.Entity;
+using ManagerServer.Model;
 using ManagerServer.Model.Farm;
 using ManagerServer.Model.ResponeModel;
 using ManagerServer.Service.FarmService;
@@ -40,11 +41,11 @@ namespace ManagerServer.Controllers
         {
             return await service.GetById (Id);
         }
-        [HttpGet, Route ("getbytoken")]
+        [HttpPost, Route ("getbytoken")]
         /// get farm from token
-        public async Task<ResponseModel<List<FarmEntity>>> GetbyToken()
+        public async Task<ResponseModel<List<FarmEntity>>> GetbyToken([FromBody] BaseQueryModel baseQuery)
         {
-            return await service.GetByOwnerId (getTokenFromHeader (HttpContext));
+            return await service.GetByOwnerId (getTokenFromHeader (HttpContext), baseQuery);
         }
         [HttpGet, Route ("takeheadertoken")]
 
