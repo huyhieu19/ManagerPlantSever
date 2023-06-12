@@ -1,7 +1,9 @@
 ﻿using ManagerServer.Common.Enum;
 using ManagerServer.Database.Entity;
+using ManagerServer.Model;
 using ManagerServer.Model.Admin;
 using ManagerServer.Model.Owner;
+using ManagerServer.Model.ResponeModel;
 using ManagerServer.Model.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,18 +44,57 @@ namespace ManagerServer.Service.UserService
             return result;
         }
 
-        public async Task<List<OwnerDisplayModel>> GetAllOwner()
+        public async Task<ResponseModel<List<OwnerDisplayModel>>> GetAllOwner(BaseQueryModel baseQueryModel)
         {
-            var owners = await userManager.GetUsersInRoleAsync (UserRoles.Owner.ToString ());
-            var result = owners.Select (q => new OwnerDisplayModel
+            try
             {
-                OwnerId = q.Id,
-                EmailAddress = q.Email,
-                FirstName = q.FirstName,
-                LastName = q.LastName
-            }).ToList ();
+                var owners = await userManager.GetUsersInRoleAsync (UserRoles.Owner.ToString ());
+                string searchTerm = baseQueryModel.searchTerm.ToUpper ().Trim ();
+                if ( !string.IsNullOrEmpty (baseQueryModel.searchTerm) )
+                {
+                    owners = owners.Where (q => q.UserName.ToUpper ().Contains (searchTerm) || q.Email.Contains (searchTerm)).ToList ();
+                }
+                if ( baseQueryModel.filterType != FilterType.None )
+                {
+                    switch ( baseQueryModel.filterType )
+                    {
+                        case FilterType.SortByA_Z:
+                            owners = owners.OrderBy (q => q.UserName).ToList ();
+                            break;
+                        case FilterType.SortByA_ZReverse:
+                            owners = owners.OrderByDescending (q => q.UserName).ToList ();
+                            break;
+                        case FilterType.SortByDate:
+                            owners = owners.OrderBy (q => q.CreateAt).ToList ();
+                            break;
+                        case FilterType.SortByDateReverse:
+                            owners = owners.OrderByDescending (q => q.CreateAt).ToList ();
+                            break;
+                    }
+                }
+                var result = owners.Select (q => new OwnerDisplayModel
+                {
+                    OwnerId = q.Id,
+                    EmailAddress = q.Email,
+                    FirstName = q.FirstName,
+                    LastName = q.LastName
+                }).ToList ();
+                return new ResponseModel<List<OwnerDisplayModel>> ()
+                {
+                    code = 0,
+                    message = "Success",
+                    data = result,
+                };
 
-            return result;
+            }
+            catch ( Exception ex )
+            {
+                return new ResponseModel<List<OwnerDisplayModel>> ()
+                {
+                    code = 0,
+                    message = ex.Message
+                };
+            }
         }
 
         public async Task<List<UserDisplayModel>> GetAllUser()
@@ -74,5 +115,6 @@ namespace ManagerServer.Service.UserService
         {
             return await userManager.FindByIdAsync (Id);
         }
+
     }
 }
