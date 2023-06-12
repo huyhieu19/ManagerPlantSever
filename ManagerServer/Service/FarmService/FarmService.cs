@@ -84,9 +84,10 @@ namespace ManagerServer.Service.FarmService
             {
                 string userId = this.GetIdbyToken (token);
                 IQueryable<FarmEntity> farmsQuery = dbContext.FarmEntities.AsNoTracking ().AsQueryable ();
+                string searchTerm = baseQueryModel.searchTerm.ToUpper ().Trim ();
                 if ( !string.IsNullOrEmpty (baseQueryModel.searchTerm) )
                 {
-                    farmsQuery = farmsQuery.Where (q => q.Name.ToUpper ().Contains (baseQueryModel.searchTerm.ToUpper ()));
+                    farmsQuery = farmsQuery.Where (q => q.Name.ToUpper ().Contains (searchTerm) || q.Decription.ToUpper ().Contains (searchTerm));
                 }
                 if ( baseQueryModel.filterType != FilterType.None )
                 {
@@ -106,6 +107,7 @@ namespace ManagerServer.Service.FarmService
                             break;
                     }
                 }
+
                 var farms = await farmsQuery.ToListAsync ();
                 return new ResponseModel<List<FarmEntity>> ()
                 {
@@ -124,6 +126,10 @@ namespace ManagerServer.Service.FarmService
                 throw;
             }
         }
+
+
+
+
         /// <summary>
         /// use for update farm
         /// </summary>

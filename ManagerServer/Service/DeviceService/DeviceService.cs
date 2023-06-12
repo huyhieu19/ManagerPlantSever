@@ -57,9 +57,10 @@ namespace ManagerServer.Service.DeviceService
             try
             {
                 IQueryable<DeviceEntity> queryDevice = dbContext.DeviceEntities.Where (q => q.ZoneId == requestModel.ZoneId).AsNoTracking ().AsQueryable ();
+                string searchTerm = requestModel.searchTerm.ToLower ().Trim ();
                 if ( !string.IsNullOrEmpty (requestModel.searchTerm) )
                 {
-                    queryDevice = queryDevice.Where (q => q.Name.ToLower ().Contains (requestModel.searchTerm.ToLower ()));
+                    queryDevice = queryDevice.Where (q => q.Name.ToLower ().Contains (searchTerm) || q.Decription.ToLower ().Contains (searchTerm));
                 }
                 if ( requestModel.filterType != Common.Enum.FilterType.None )
                 {

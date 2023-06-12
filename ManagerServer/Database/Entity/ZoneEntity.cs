@@ -7,7 +7,7 @@ namespace ManagerServer.Database.Entity
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("FarmEntity")]
+        [ForeignKey ("FarmEntity")]
         public int? FarmId { get; set; }
         public string? Name { get; set; }
         public string? Decription { get; set; }
@@ -15,5 +15,6 @@ namespace ManagerServer.Database.Entity
         public DateTime? UpdateAt { get; set; }
         public string? Image { get; set; }
         public List<DeviceEntity>? DeviceEntity { get; set; }
+        public List<DeviceActionEntity>? DeviceActionEntity { get; set; }
     }
 }

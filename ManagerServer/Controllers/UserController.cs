@@ -1,6 +1,8 @@
 ﻿using ManagerServer.Database.Entity;
+using ManagerServer.Model;
 using ManagerServer.Model.Admin;
 using ManagerServer.Model.Owner;
+using ManagerServer.Model.ResponeModel;
 using ManagerServer.Model.User;
 using ManagerServer.Service.UserService;
 using Microsoft.AspNetCore.Authorization;
@@ -42,10 +44,10 @@ namespace ManagerServer.Controllers
         {
             return await service.GetAllAdmin ();
         }
-        [HttpGet, Route ("owners")]
-        public async Task<List<OwnerDisplayModel>> GetAllOwner()
+        [HttpPost, Route ("owners")]
+        public async Task<ResponseModel<List<OwnerDisplayModel>>> GetAllOwner([FromBody] BaseQueryModel baseQueryModel)
         {
-            return await service.GetAllOwner ();
+            return await service.GetAllOwner (baseQueryModel);
         }
         [HttpGet, Route ("users")]
         public async Task<List<UserDisplayModel>> GetAllUser()
