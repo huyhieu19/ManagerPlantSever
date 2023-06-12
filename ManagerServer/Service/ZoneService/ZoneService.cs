@@ -38,7 +38,7 @@ namespace ManagerServer.Service.ZoneService
         {
 
 
-            IQueryable<ZoneEntity> queryable = dbContext.ZoneEntities.Where (q => q.FarmId == queryModel.FarmId).AsQueryable ();
+            IQueryable<ZoneEntity> queryable = dbContext.ZoneEntities.Where (q => q.FarmId == queryModel.FarmId).AsNoTracking ().AsQueryable ();
             if ( !string.IsNullOrEmpty (queryModel.searchTerm) )
             {
                 queryable = queryable.Where (q => q.Name.ToLower ().Contains (queryModel.searchTerm.ToLower ()));
