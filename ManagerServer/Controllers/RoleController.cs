@@ -1,5 +1,4 @@
 ﻿using ManagerServer.Service.RoleService;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ManagerServer.Controllers
@@ -13,7 +12,8 @@ namespace ManagerServer.Controllers
         {
             this.roleService = roleService;
         }
-        [HttpGet, Route ("get-all"), Authorize (Roles = "Admin, User, Owner")]
+        //[HttpGet, Route ("get-all"), Authorize (Roles = "Admin, User, Owner")]
+        [HttpGet, Route ("get-all")]
 
         public async Task<List<string>> GetAll()
         {
@@ -27,13 +27,14 @@ namespace ManagerServer.Controllers
         {
             return await roleService.AddRoles (name);
         }
-        [HttpPost, Route ("add-user-role"), Authorize (Roles = "Admin, Owner")]
+        //[HttpPost, Route ("add-user-role"), Authorize (Roles = "Admin, Owner")]
+        [HttpPost, Route ("add-user-role")]
 
         public async Task<bool> AddUserRole(string email, string name)
         {
             return await roleService.AddUserRoles (email, name);
         }
-        [HttpDelete, Route ("delete"), Authorize (Roles = "Admin")]
+        [HttpDelete, Route ("delete")]
 
         public async Task<bool> Delete(string name)
         {

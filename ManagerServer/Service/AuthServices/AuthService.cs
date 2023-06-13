@@ -45,7 +45,7 @@ namespace ManagerServer.Service.VisitorServices
                 FirstName = model.FistName,
                 LastName = model.LastName,
                 Email = model.Email,
-                UserName = model.FistName + " " + model.LastName,
+                UserName = $"{model.FistName}_{model.LastName}",
                 Birthday = DateTime.Now,
                 PhoneNumber = model.NumberPhone,
             };
